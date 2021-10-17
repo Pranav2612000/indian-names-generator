@@ -1,5 +1,5 @@
 # indian-names-generator
-A fun project to test out deploying APIs on serverless cloud (https://www.serverless.com/cloud/). 
+A fun project to test out deploying APIs on serverless cloud (https://www.serverless.com/cloud/) and deploying on RapidAPI(https://rapidapi.com/Pranav2612000/api/indian-names). 
 Returns a random array of Indian names
 
 Live link: https://yellow-paper-abf36.cloud.serverless.com/names
