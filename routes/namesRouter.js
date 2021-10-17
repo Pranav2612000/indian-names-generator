@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const stringToBoolean = require("../helpers/stringToBoolean");
+const getRandom = require("../helpers/getRandom");
 
 const randomNameGenerator = require("random-indian-name");
 
@@ -20,8 +21,12 @@ router.get('/', (req, res) => {
 router.get('/names', (req, res) => {
 
   /* fetch value from query params */
-  let { first, last, gender, seed } = req.query;
+  let { number, first, last, gender, seed } = req.query;
 
+  /* If number of names required is not defined set it to 1 by default */
+  if(number == undefined) {
+    number = 1;
+  }
   /* if first, last values exist, convert them to boolean */
   if(first != undefined) {
     first = stringToBoolean(first);
@@ -31,6 +36,18 @@ router.get('/names', (req, res) => {
   }
 
   /* validate input data */
+  try {
+    number = parseInt(number)
+    if(isNaN(number)) {
+      return res.status(400).json({
+        err: "number should be an integer"
+      });
+    }
+  } catch(err) {
+    return res.status(400).json({
+      err: "number should be an integer"
+    });
+  }
   if(first != undefined && typeof first != "boolean") {
     return res.status(400).json({
       err: "first should be a boolean"
@@ -59,15 +76,22 @@ router.get('/names', (req, res) => {
     });
   }
 
-  return res.json({
-    names: [
+  const names = [];
+  for (let i = 0; i < number; i++) {
+    names.push(
       randomNameGenerator({
         first,
         last,
         gender,
-        seed
+        // By default the seed depends on the timestamp and since the function is going to be called multiple times
+        // with the same timestamp the returned names are the same. To get around this we pass a random timestamp as the seed
+        seed: new Date().getTime() + getRandom(1000, -1000) 
       })
-    ]
+    )
+  }
+
+  return res.json({
+    names
   });
 });
 
