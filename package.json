@@ -11,5 +11,12 @@
   "dependencies": {
     "express": "^4.17.1",
     "random-indian-name": "^1.0.0"
+  },
+  "serverless": {
+    "org": "pranav2612000",
+    "app": "indian-names-api"
+  },
+  "devDependencies": {
+    "@serverless/cloud": "^2.3.3"
   }
 }
